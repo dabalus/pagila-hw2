@@ -1,1 +1,13 @@
-select distinct concat(first_name,' ', last_name) "Actor Name"  from (select film_id, title, unnest(special_features) sf from film) T  JOIN film_actor on film_actor.film_id = T.film_id JOIN actor on actor.actor_id = film_actor.actor_id where sf = 'Behind the Scenes';
+SELECT DISTINCT concat(first_name, ' ',  last_name) 
+AS  "Actor Name"
+FROM actor
+INNER JOIN film_actor
+ON film_actor.actor_id = actor.actor_id
+INNER JOIN 
+	(
+        SELECT unnest(special_features) as sp, film_id
+        FROM film
+        ) as spf
+on spf.film_id = film_actor.film_id
+WHERE spf.sp = 'Behind the Scenes'
+ORDER BY "Actor Name" ASC;
